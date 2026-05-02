@@ -3,6 +3,7 @@
 
 #include <SDL3/SDL.h>
 #include<SDL3_ttf/SDL_ttf.h>
+#include"ui.h"
 
 typedef struct 
 {
@@ -22,17 +23,16 @@ typedef struct
 typedef struct
 {
     bool metronome_running;
-    bool is_dragging;
     int bpm;
-    int bpm_max;
-    int bpm_min;
+    
 }Metronome;
 
 typedef struct
 {
     SDL_FRect run_metronome_rect;
-    SDL_FRect slider_bar;
-    SDL_FRect slider_knob;
+
+    Slider slider;
+
 
     char bpm_text[3];
     SDL_FRect bpm_display;

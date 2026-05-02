@@ -17,11 +17,11 @@ void render(Variables* v)
     //スライダー描画
     // バー
     SDL_SetRenderDrawColor(v -> app.renderer, 200, 200, 200, 255);
-    SDL_RenderFillRect(v -> app.renderer, &v -> ui.slider_bar);
+    SDL_RenderFillRect(v -> app.renderer, &v -> ui.slider.slider_bar);
 
     // つまみ
     SDL_SetRenderDrawColor(v -> app.renderer, 255, 0, 0, 255);
-    SDL_RenderFillRect(v -> app.renderer, &v -> ui.slider_knob);
+    SDL_RenderFillRect(v -> app.renderer, &v -> ui.slider.slider_knob);
 
     SDL_Color text_color = {255,255,255,255};
 
