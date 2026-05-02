@@ -24,9 +24,8 @@ typedef struct
     bool metronome_running;
     bool is_dragging;
     int bpm;
-    const int bpm_max;
-    const int bpm_min;
-    char bpm_text[3];
+    int bpm_max;
+    int bpm_min;
 }Metronome;
 
 typedef struct
@@ -35,6 +34,7 @@ typedef struct
     SDL_FRect slider_bar;
     SDL_FRect slider_knob;
 
+    char bpm_text[3];
     SDL_FRect bpm_display;
 }UI;
 
@@ -44,9 +44,9 @@ typedef struct
     Resources resources;
     Metronome metronome;
     UI ui;
-}Context;
+}Variables;
 
-void init(Context* context);
+void init(Variables* variables);
 
 
 #endif
