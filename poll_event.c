@@ -23,7 +23,7 @@ void poll_event(Variables* v)
 
         if (event.type == SDL_EVENT_MOUSE_BUTTON_DOWN)
         { 
-            if(has_clicked(v->ui.run_metronome_rect,event))
+            if(has_clicked(v->ui.run_metronome_button.button,event))
             {
                 v->metronome.metronome_running = !v->metronome.metronome_running;
             }

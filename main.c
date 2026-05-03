@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
         //software functions
         if(v.metronome.metronome_running)
         {
-            metronome_run();
+            metronome_run(&v.metronome);
         }    
 
         render(&v);

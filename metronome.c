@@ -3,7 +3,11 @@
 #include<SDL3/SDL.h>
 #include<time.h>
 #include<math.h>
+#include<stdlib.h>
 
+
+#define SAMPLE_RATE 44100
+#define DURATION 0.05   // 50ms
 
 typedef struct 
 {
@@ -19,22 +23,19 @@ static metronome_valuable mv;
 
 static struct timespec ts;
 
-#define SAMPLE_RATE 44100
-#define DURATION 0.05   // 50ms
-
-float beep[44100/20];
-
-void generate_beep()
+float* generate_beep(float freq)
 {
-    float freq = 1320.0f;
+    
+    float* beep = malloc(sizeof(float) * 2205);
 
     for(int i = 0; i < SAMPLE_RATE * DURATION; i++)
     {
         beep[i] = 0.3f * sinf(2.0f * 3.14159f * freq * i / SAMPLE_RATE);
     }
+    return beep;
 }
 
-void init_metronome(int bpm)
+void init_metronome(Variables* v)
 {
     
     SDL_zero(mv.audio_spec);
@@ -47,37 +48,48 @@ void init_metronome(int bpm)
     SDL_BindAudioStream(mv.dev,mv.stream);
     SDL_ResumeAudioDevice(mv.dev);
 
+    v->metronome.sound.sound_1 = generate_beep(880.0f);
+    v->metronome.sound.sound_2 = generate_beep(440.0f);
+    v -> metronome.sound.sound_length = (int)(SAMPLE_RATE * DURATION);
 
-
-    generate_beep();
-
-
-    
     clock_gettime(CLOCK_MONOTONIC,&ts);
     mv.now = ts.tv_sec + ts.tv_nsec/1e9;
     mv.next = mv.now;
-    mv.interval = 60.0f/(float)bpm;
-    printf("%d",bpm);
+    mv.interval = 60.0f/(float)v -> metronome.bpm;
+    printf("%d",v -> metronome.bpm);
 }
 
 void metronome_set_bpm(int bpm)
 {
-    clock_gettime(CLOCK_MONOTONIC,&ts);
-    mv.now = ts.tv_sec + ts.tv_nsec/1e9;
-    mv.next = mv.now;
+
     mv.interval = 60.0f/(float)bpm;
     printf("%d",bpm);
 }
 
-void metronome_run(){
+void metronome_run(Metronome* metronome){
 
     clock_gettime(CLOCK_MONOTONIC,&ts);
     mv.now = ts.tv_sec + ts.tv_nsec/1e9;
     if(mv.next <= mv.now)
     {
+        if(metronome->timesignature.current_beat == 1)
+        {
+            SDL_PutAudioStreamData(mv.stream,metronome->sound.sound_1,sizeof(float) * metronome->sound.sound_length);
+        }
+        else if(metronome->timesignature.current_beat != 1)
+        {
+            SDL_PutAudioStreamData(mv.stream,metronome->sound.sound_2,sizeof(float) * metronome->sound.sound_length);
+        }
         printf("tick!");
-        SDL_PutAudioStreamData(mv.stream, beep, sizeof(beep));
+        
         mv.next = mv.now + mv.interval;
+
+        metronome->timesignature.current_beat ++;
+
+        if(metronome->timesignature.current_beat == metronome->timesignature.beats_per_measure + 1)
+        {
+            metronome->timesignature.current_beat = 1;
+        }
     }
 
 }

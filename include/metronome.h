@@ -1,8 +1,10 @@
 #ifndef METRONOME_H
 #define METRONOME_H
 
-void init_metronome(int bpm);
+#include"init.h"
+
+void init_metronome(Variables* v);
 void metronome_set_bpm(int bpm);
-void metronome_run(void);
+void metronome_run(Metronome* metronome);
 
 #endif

@@ -26,20 +26,24 @@ void init(Variables* v)
     v -> app.running = true;
     v -> metronome.metronome_running = false;
 
+    v->metronome.timesignature.beats_per_measure = 4;
+    v->metronome.timesignature.note_value = 4;
+    v->metronome.timesignature.current_beat = 1;
+
     
     v -> metronome.bpm=120;
     int bpm_max = 400;
     int bpm_min = 30;
 
-    v -> ui.run_metronome_rect = create_rect(100.0f,100.0f,100.0f,50.0f);
+    v -> ui.run_metronome_button = init_button(100.0f,100.0f,100.0f,50.0f,(SDL_Color){0, 255, 0, 255});
 
-    SDL_FRect slider_bar = create_rect(200.0f,200.0f,200.0f,10.0f);
-    SDL_FRect slider_knob = create_rect(slider_bar.x + (v -> metronome.bpm - bpm_min) * slider_bar.w / (float)(bpm_max-bpm_min),190.0f,20.0f,20.0f);
-    v -> ui.slider = init_slider(slider_bar,slider_knob,bpm_max,bpm_min);
+    
+    v -> ui.slider = init_slider(200.0f,200.0f,200.0f,10.0f,20.0f,bpm_max,bpm_min,(SDL_Color){200, 200, 200,255},(SDL_Color){255, 0, 0,255});
+    slider_set_value(&v -> ui.slider,v -> metronome.bpm);
 
     v -> ui.bpm_display = create_rect(100.0f, 50.0f, 100.0f, 50.0f);
 
-    init_metronome(v -> metronome.bpm);
+    init_metronome(v);
 
     sprintf(v -> ui.bpm_text,"%d",v -> metronome.bpm);
     

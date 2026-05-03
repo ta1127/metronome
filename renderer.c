@@ -12,7 +12,7 @@ void render(Variables* v)
 
     // ボタン描画
     SDL_SetRenderDrawColor(v -> app.renderer, 0, 255, 0, 255);
-    SDL_RenderFillRect(v -> app.renderer, &v -> ui.run_metronome_rect);
+    SDL_RenderFillRect(v -> app.renderer, &v -> ui.run_metronome_button.button);
 
     //スライダー描画
     // バー

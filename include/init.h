@@ -15,21 +15,42 @@ typedef struct
 
 }App;
 
+
+typedef struct
+{
+    float*  sound_1;
+    float* sound_2;
+    int sound_length;
+}Sound;
+
 typedef struct
 {
     TTF_Font* font;
+    
 }Resources;
+
+typedef struct 
+{
+    int beats_per_measure;
+    int note_value;
+
+    int current_beat;
+}Timesignature;
+
+
 
 typedef struct
 {
     bool metronome_running;
     int bpm;
+    Sound sound;
+    Timesignature timesignature;
     
 }Metronome;
 
 typedef struct
 {
-    SDL_FRect run_metronome_rect;
+    Button run_metronome_button;
 
     Slider slider;
 
